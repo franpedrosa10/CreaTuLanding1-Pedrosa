@@ -1,28 +1,36 @@
-import CartWidget from "./CartWidget";
+import { Link, NavLink } from "react-router-dom";
+import { categories } from "../mock/data";
 import "./NavBar.css";
+import CartWidget from "./CartWidget";
 
-const NavBar = () => {
+export default function NavBar() {
+  const active = ({ isActive }) =>
+    "nav-link" + (isActive ? " nav-link--active" : "");
+
   return (
-    <nav className="navbar">
+    <nav className="nav">
+      <Link to="/" className="brand">
+        <img src="/logo.png" alt="logo" className="brand-logo" />
+        AFRAM Electronics
+      </Link>
 
-      <div className="navbar-logo">
-        <img src="/logo.png" alt="AFRAM Electronics" />
-      </div>
+      <ul className="nav-links">
+        {categories.map((c) => (
+          <li key={c.id}>
+            <NavLink
+              to={c.id === "todas" ? "/" : `/category/${c.id}`}
+              className={active}
+              end
+            >
+              {c.name}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
 
-      <div className="navbar-center">
-        <ul className="navbar-links">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#">Productos</a></li>
-          <li><a href="#">Ofertas</a></li>
-          <li><a href="#">Contacto</a></li>
-        </ul>
-      </div>
-
-      <div className="navbar-cart">
+      <Link to="/cart" className="cart">
         <CartWidget />
-      </div>
+      </Link>
     </nav>
   );
-};
-
-export default NavBar;
+}
